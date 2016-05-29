@@ -10,15 +10,28 @@ class Image {
     let canvas = this.canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
-    this.ctx = canvas.getContext('2d');
 
     this.width = width;
     this.height = height;
   }
+}
 
-  setPixel(x, y, color) {
-    this.ctx.fillStyle = color.hexString();
-    this.ctx.fillRect(x, y, 1, 1);
+
+class Pencil {
+  handleClick(x, y, image, color) {
+    let ctx = image.canvas.getContext('2d');
+    ctx.fillStyle = color.hexString();
+    ctx.fillRect(x, y, 1, 1);
+  }
+}
+
+
+class Eraser {
+  handleClick(x, y, image) {
+    let ctx = image.canvas.getContext('2d');
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(x, y, 1, 1);
   }
 }
 
@@ -26,25 +39,42 @@ class Image {
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.tools = {
+      pencil: new Pencil(),
+      eraser: new Eraser()
+    };
+
     this.state = {
       zoom: 1,
       image: new Image(8, 8),
+      currentTool: 'pencil',
       color: new Color('red')
     };
   }
 
   render() {
-    let {zoom, image} = this.state;
+    let {zoom, image, currentTool} = this.state;
 
     return (
       <div className="app">
-        <Toolbox />
+        <Toolbox
+          currentTool={currentTool}
+          tools={this.tools}
+          onClickTool={::this.handleClickTool}
+        />
         <div className="main-panel">
           <Editor zoom={zoom} image={image} onClickArtboard={::this.handleClickArtboard}/>
           <StatusBar zoom={zoom} onChangeZoom={::this.handleChangeZoom} />
         </div>
       </div>
     );
+  }
+
+  handleClickTool(toolName) {
+    this.setState({
+      currentTool: toolName
+    });
   }
 
   handleChangeZoom(newZoom) {
@@ -54,8 +84,9 @@ class App extends Component {
   }
 
   handleClickArtboard(x, y) {
-    let {image, color} = this.state;
-    image.setPixel(x, y, color);
+    let {image, color, currentTool} = this.state;
+    let tool = this.tools[currentTool];
+    tool.handleClick(x, y, image, color);
     this.setState({image: image});
   }
 }
@@ -63,21 +94,46 @@ class App extends Component {
 
 class Toolbox extends Component {
   render() {
+    let {tools, currentTool, onClickTool} = this.props;
+
+    let toolTags = [];
+    for (let toolName in tools) {
+      toolTags.push(
+        <ToolButton
+          key={toolName}
+          name={toolName}
+          selected={toolName == currentTool}
+          onClick={onClickTool}
+        />
+      );
+    }
+
     return (
-      <div className="toolbox">
-        <Tool name="pencil" />
+      <div className="toolbox" refs="toolbox">
+        {toolTags}
       </div>
     );
+  }
+
+  onComponentDidUpdate() {
+    this.refs.toolbox.querySelector(this.props.currentTool);
   }
 }
 
 
-class Tool extends Component {
+class ToolButton extends Component {
   render() {
-    const {name} = this.props;
+    const {name, selected} = this.props;
     return (
-      <div className={`tool ${name}`}>{name}</div>
+      <div className={`tool ${name} ${selected && 'selected'}`} onClick={::this.handleClick}>
+        {name}
+      </div>
     );
+  }
+
+  handleClick() {
+    let {name, onClick} = this.props;
+    onClick(name);
   }
 }
 
