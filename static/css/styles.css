@@ -1,0 +1,83 @@
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Fira Sans'), local('FiraSans-Regular'), url(../fonts/Fira_Sans_Regular.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+@font-face {
+  font-family: 'Fira Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Fira Sans Bold'), local('FiraSans-Bold'), url(../fonts/Fira_Sans_Bold.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+  font-family: 'Fira Sans';
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.toolbox {
+  background: red;
+  flex-shrink: 0;
+  width: 50px;
+}
+
+.main-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.editor {
+  align-items: center;
+  background: green;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+.editor-canvas {
+  background: white;
+}
+
+.editor-canvas.show-grid {
+  background-image: url(../img/canvas-bg.png);
+  image-rendering: pixelated;
+}
+
+.status-bar {
+  display: flex;
+  flex-shrink: 0;
+  height: 1.5em;
+  line-height: 1.5em;
+}
+
+.filename {
+  flex: 1;
+}
+
+.zoom {
+  display: flex;
+  flex-shrink: 0;
+  width: 150px;
+}
+
+.zoom .button {
+  flex-shrink: 0;
+  width: 25px;
+}
+
+.zoom .zoom-input {
+  flex: 1;
+}

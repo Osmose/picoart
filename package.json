@@ -1,0 +1,35 @@
+{
+  "name": "picoart",
+  "version": "0.0.1",
+  "description": "Makin' art n' stuff.",
+  "repository": "Osmose/picoart",
+  "main": "src/main.built.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently --kill-others \"./node_modules/.bin/electron .\" \"webpack --watch --colors\"",
+    "build": "webpack --colors",
+    "watch": "webpack --watch --colors"
+  },
+  "author": "Michael Kelly",
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "^6.3.15",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "color": "^0.11.1",
+    "electron-prebuilt": "^0.35.4",
+    "react": "^0.14.8",
+    "react-dom": "^0.14.8"
+  },
+  "devDependencies": {
+    "babel-eslint": "^5.0.0",
+    "babel-loader": "^6.2.4",
+    "concurrently": "^2.0.0",
+    "eslint": "^1.10.3",
+    "eslint-plugin-babel": "^3.1.0",
+    "eslint-plugin-react": "^4.2.0",
+    "webpack": "^1.13.0"
+  }
+}
