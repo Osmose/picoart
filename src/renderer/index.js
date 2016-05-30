@@ -54,7 +54,7 @@ class App extends Component {
   }
 
   render() {
-    let {zoom, image, currentTool} = this.state;
+    let {zoom, image, currentTool, color} = this.state;
 
     return (
       <div className="app">
@@ -62,6 +62,8 @@ class App extends Component {
           currentTool={currentTool}
           tools={this.tools}
           onClickTool={::this.handleClickTool}
+          onChangeColor={::this.handleChangeColor}
+          currentColor={color.hexString()}
         />
         <div className="main-panel">
           <Editor zoom={zoom} image={image} onClickArtboard={::this.handleClickArtboard}/>
@@ -83,6 +85,10 @@ class App extends Component {
     });
   }
 
+  handleChangeColor(newColor) {
+    this.setState({color: new Color(newColor)});
+  }
+
   handleClickArtboard(x, y) {
     let {image, color, currentTool} = this.state;
     let tool = this.tools[currentTool];
@@ -94,7 +100,7 @@ class App extends Component {
 
 class Toolbox extends Component {
   render() {
-    let {tools, currentTool, onClickTool} = this.props;
+    let {tools, currentTool, onClickTool, currentColor} = this.props;
 
     let toolTags = [];
     for (let toolName in tools) {
@@ -111,6 +117,7 @@ class Toolbox extends Component {
     return (
       <div className="toolbox" refs="toolbox">
         {toolTags}
+        <ColorPicker onChange={this.props.onChangeColor} value={currentColor} />
       </div>
     );
   }
@@ -134,6 +141,21 @@ class ToolButton extends Component {
   handleClick() {
     let {name, onClick} = this.props;
     onClick(name);
+  }
+}
+
+
+class ColorPicker extends Component {
+  render() {
+    let {value} = this.props;
+
+    return (
+      <input type="color" onChange={::this.handleChange} value={value} />
+    );
+  }
+
+  handleChange(event) {
+    this.props.onChange(event.target.value);
   }
 }
 
@@ -207,7 +229,7 @@ class Artboard extends Component {
     return (
       <canvas
         ref="canvas"
-        className="editor-canvas show-grid"
+        className="artboard"
         onClick={::this.handleClick}
       />
     );
@@ -232,7 +254,6 @@ class Artboard extends Component {
     canvas.height = image.height * zoom;
     ctx.scale(zoom, zoom);
     ctx.imageSmoothingEnabled = false;
-    canvas.style.backgroundSize = `${zoom * 2}px`;
 
     ctx.drawImage(image.canvas, 0, 0);
   }

@@ -51,13 +51,10 @@ body {
   justify-content: center;
 }
 
-.editor-canvas {
-  background: white;
-}
-
-.editor-canvas.show-grid {
+.artboard {
   background-image: url(../img/canvas-bg.png);
   image-rendering: pixelated;
+  background-size: 8px;
 }
 
 .status-bar {
