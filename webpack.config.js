@@ -13,7 +13,8 @@ var defaults = {
   },
   module: {
     loaders: [
-      {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'}
+      {test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader'},
+      {test: /\.json$/, loader: 'json-loader'}
     ]
   }
 };
@@ -28,7 +29,7 @@ module.exports = [
     target: 'electron'
   }),
   Object.assign({}, defaults, {
-    entry: './src/renderer/index.js',
+    entry: ['babel-polyfill', './src/renderer/index.js'],
     output: {
       path: path.resolve(__dirname, 'src'),
       filename: 'renderer.built.js'

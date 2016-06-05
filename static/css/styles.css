@@ -18,8 +18,13 @@
     box-sizing: border-box;
 }
 
+html {
+  overflow: hidden;
+}
+
 body {
   font-family: 'Fira Sans';
+  overflow: auto;
 }
 
 .app {
@@ -44,17 +49,17 @@ body {
 }
 
 .editor {
-  align-items: center;
   background: green;
   display: flex;
   flex: 1;
-  justify-content: center;
+  overflow: auto;
 }
 
 .artboard {
   background-image: url(../img/canvas-bg.png);
   image-rendering: pixelated;
   background-size: 8px;
+  margin: auto;
 }
 
 .status-bar {
